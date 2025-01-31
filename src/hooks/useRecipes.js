@@ -44,7 +44,7 @@ export function useRecipes() {
 
     setLoading(true);
     setError(null);
-    setCurrentPage(1); // Reset page to 1 when searching
+    setCurrentPage(1);
 
     try {
       const results = await searchRecipes(query);

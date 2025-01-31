@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { UtensilsCrossed, Clock, Users, Loader2 } from "lucide-react";
 import { MinusCircle, CirclePlus } from "lucide-react";
 
@@ -7,6 +7,12 @@ export function RecipeDetail({ recipe, loading, error }) {
   const [adjustedIngredients, setAdjustedIngredients] = useState(
     recipe?.ingredients || []
   );
+
+  useEffect(() => {
+    if (recipe?.ingredients) {
+      recalculateIngredients(servings);
+    }
+  }, [recipe]);
 
   const recalculateIngredients = (newServings) => {
     if (!recipe?.ingredients) return;
@@ -113,7 +119,7 @@ export function RecipeDetail({ recipe, loading, error }) {
             <li key={index} className="text-emerald-800">
               <span className="font-medium">
                 {ingredient.quantity ? ingredient.quantity.toFixed(2) : ""}{" "}
-                {ingredient.unit ? ingredient.unit + " " : ""}
+                {ingredient.unit ? ingredient.unit + " " : ""}{" "}
               </span>{" "}
               {ingredient.description}
             </li>
