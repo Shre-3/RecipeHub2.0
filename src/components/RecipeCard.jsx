@@ -1,5 +1,5 @@
-import React from 'react';
-import { Clock, Users } from 'lucide-react';
+import React from "react";
+import { Clock, Users } from "lucide-react";
 
 export function RecipeCard({ recipe, isSelected, onClick }) {
   return (
@@ -7,8 +7,8 @@ export function RecipeCard({ recipe, isSelected, onClick }) {
       onClick={onClick}
       className={`p-4 rounded-lg cursor-pointer transition-all ${
         isSelected
-          ? 'bg-[#1f5129] text-[#f4f1e7]'
-          : 'bg-[#f0e4cc] hover:bg-[#1f5129]/10'
+          ? "bg-[#1f5129] text-[#f4f1e7]"
+          : "bg-[#f0e4cc] hover:bg-[#1f5129]/10"
       }`}
     >
       <div className="flex flex-col sm:flex-row gap-4">
@@ -25,6 +25,7 @@ export function RecipeCard({ recipe, isSelected, onClick }) {
                 <Clock className="w-4 h-4" />
                 {recipe.cookTime} mins
               </span>
+
               <span className="flex items-center gap-1">
                 <Users className="w-4 h-4" />
                 {recipe.servings} servings
