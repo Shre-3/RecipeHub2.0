@@ -34,6 +34,7 @@ router.get("/", auth, async (req, res) => {
           `${process.env.RECIPE_API_URL}/${bookmark.recipeId}`
         );
         const recipe = response.data.data.recipe;
+        console.log("Forkify API recipe:", recipe);
         return {
           id: recipe.id,
           name: recipe.title,

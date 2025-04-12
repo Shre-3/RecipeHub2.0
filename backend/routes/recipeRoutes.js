@@ -79,7 +79,7 @@ router.get("/", async (req, res) => {
           cooking_time: recipe.cooking_time,
           servings: recipe.servings,
           ingredients: recipe.ingredients,
-          source_url: recipe.sourceUrl || "",
+          sourceUrl: recipe.sourceUrl || "",
           isAIGenerated: recipe.isAIGenerated || false,
         })),
       },

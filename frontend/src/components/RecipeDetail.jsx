@@ -67,7 +67,7 @@ export function RecipeDetail({ recipe, loading, error }) {
           cooking_time: recipe.cookTime || recipe.cooking_time || 30,
           servings: recipe.servings || 4,
           image_url: recipe.image,
-          source_url: recipe.sourceUrl || "",
+          sourceUrl: recipe.sourceUrl || "",
           isExternalRecipe: true,
           external_id: recipe.id,
           publisher: recipe.publisher,

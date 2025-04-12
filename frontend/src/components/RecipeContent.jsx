@@ -2,6 +2,12 @@ import React from "react";
 import { ExternalLink } from "lucide-react";
 
 export function RecipeContent({ recipe, servings }) {
+  console.log("Recipe in RecipeContent:", {
+    sourceUrl: recipe.sourceUrl,
+    isAIGenerated: recipe.isAIGenerated,
+    recipe: recipe,
+  });
+
   return (
     <>
       {/* Ingredients Section */}
