@@ -37,14 +37,21 @@ export function RecipeContent({ recipe, servings }) {
             Instructions
           </h3>
           <ol className="list-none space-y-3 text-gray-800">
-            {recipe.instructions.map((instruction, index) => (
-              <li key={index} className="flex gap-2">
-                <span className="font-medium text-[#1f5129] whitespace-nowrap">
-                  Step {index + 1}:
-                </span>
-                <span>{instruction}</span>
-              </li>
-            ))}
+            {recipe.instructions.map((instruction, index) => {
+              // Remove the duplicate "Step" if it exists in the instruction
+              const cleanInstruction = instruction.replace(
+                /^Step \d+:\s*/i,
+                ""
+              );
+              return (
+                <li key={index} className="flex gap-2">
+                  <span className="font-medium text-[#1f5129] whitespace-nowrap">
+                    Step {index + 1}:
+                  </span>
+                  <span>{cleanInstruction}</span>
+                </li>
+              );
+            })}
           </ol>
         </div>
       )}
