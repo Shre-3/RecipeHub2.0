@@ -90,7 +90,11 @@ export function RecipeDetail({ recipe, loading, error }) {
         await axios.post(
           `${baseUrl}/api/bookmarks`,
           {
-            recipeId: recipeResponse.data._id,
+            recipe: {
+              id: recipeResponse.data._id,
+              sourceUrl: recipe.sourceUrl || "",
+              isAIGenerated: recipe.isAIGenerated || false,
+            },
           },
           {
             headers: {
