@@ -13,13 +13,13 @@ export async function searchRecipes(query) {
 
   // Transform the Forkify recipe format to our app's format
   return data.data.recipes.map((recipe) => ({
-    id: recipe.id,
+    id: recipe.id || recipe._id,
     name: recipe.title,
     description: recipe.title,
     image: recipe.image_url,
-    sourceUrl: recipe.source_url,
-    cookTime: 30, // Default value since Forkify doesn't provide this
-    servings: 4, // Default value since Forkify doesn't provide this
+    sourceUrl: recipe.sourceUrl || recipe.source_url || "",
+    cookTime: recipe.cooking_time || 30, // Default value if not provided
+    servings: recipe.servings || 4, // Default value if not provided
     ingredients: recipe.ingredients
       ? recipe.ingredients.map((ing) => ({
           quantity: ing.quantity || 0,
@@ -29,7 +29,7 @@ export async function searchRecipes(query) {
       : [],
     instructions: recipe.cooking_instructions || [],
     isBookmarked: false,
-    isAIGenerated: false,
+    isAIGenerated: recipe.isAIGenerated || false,
   }));
 }
 
@@ -87,7 +87,7 @@ export async function saveRecipe(recipe) {
 
 function mapApiRecipe(apiRecipe) {
   return {
-    id: apiRecipe.id,
+    id: apiRecipe.id || apiRecipe._id,
     name: apiRecipe.title,
     publisher: apiRecipe.publisher || "",
     ingredients: apiRecipe.ingredients
@@ -100,7 +100,7 @@ function mapApiRecipe(apiRecipe) {
     image: apiRecipe.image_url,
     cookTime: apiRecipe.cooking_time || null,
     servings: apiRecipe.servings || null,
-    sourceUrl: apiRecipe.source_url || "",
-    isAIGenerated: false,
+    sourceUrl: apiRecipe.sourceUrl || apiRecipe.source_url || "",
+    isAIGenerated: apiRecipe.isAIGenerated || false,
   };
 }
