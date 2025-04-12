@@ -57,7 +57,7 @@ export function RecipeContent({ recipe, servings }) {
       )}
 
       {/* Source Link */}
-      {recipe.sourceUrl && (
+      {recipe.sourceUrl && !recipe.isAIGenerated && (
         <div className="mt-4">
           <a
             href={recipe.sourceUrl}

@@ -29,6 +29,7 @@ export async function searchRecipes(query) {
       : [],
     instructions: recipe.cooking_instructions || [],
     isBookmarked: false,
+    isAIGenerated: false,
   }));
 }
 
@@ -63,7 +64,7 @@ export async function saveRecipe(recipe) {
     servings: recipe.servings,
     image_url: recipe.image,
     isAIGenerated: recipe.isAIGenerated,
-    source_url: recipe.sourceUrl,
+    sourceUrl: recipe.sourceUrl,
   };
 
   const response = await fetch(`${BASE_URL}/api/recipes`, {
@@ -100,5 +101,6 @@ function mapApiRecipe(apiRecipe) {
     cookTime: apiRecipe.cooking_time || null,
     servings: apiRecipe.servings || null,
     sourceUrl: apiRecipe.source_url || "",
+    isAIGenerated: false,
   };
 }
