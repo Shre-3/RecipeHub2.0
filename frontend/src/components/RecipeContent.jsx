@@ -36,9 +36,14 @@ export function RecipeContent({ recipe, servings }) {
           <h3 className="text-lg font-semibold text-[#1f5129] mb-3">
             Instructions
           </h3>
-          <ol className="list-decimal ml-5 space-y-2 text-gray-800">
+          <ol className="list-none space-y-3 text-gray-800">
             {recipe.instructions.map((instruction, index) => (
-              <li key={index}>{instruction}</li>
+              <li key={index} className="flex gap-2">
+                <span className="font-medium text-[#1f5129] whitespace-nowrap">
+                  Step {index + 1}:
+                </span>
+                <span>{instruction}</span>
+              </li>
             ))}
           </ol>
         </div>
