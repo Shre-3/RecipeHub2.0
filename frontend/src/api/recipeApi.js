@@ -1,39 +1,13 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export async function searchRecipes(query) {
-  console.log("Search URL:", `${BASE_URL}?search=${query}`);
-  console.log("BASE_URL:", BASE_URL);
-
-  const response = await fetch(`${BASE_URL}?search=${query}`);
-  if (!response.ok) throw new Error("Failed to fetch recipes");
-  const data = await response.json();
-
-  console.log("API Response:", data);
-
-  if (!data.data || !Array.isArray(data.data.recipes)) {
-    throw new Error("Unexpected API response format");
+export const searchRecipes = async (query) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}?search=${query}`);
+    return data;
+  } catch (error) {
+    throw new Error("Failed to search recipes");
   }
-
-  // Transform the Forkify recipe format to our app's format
-  return data.data.recipes.map((recipe) => ({
-    id: recipe.id,
-    name: recipe.title,
-    description: recipe.title,
-    image: recipe.image_url,
-    sourceUrl: recipe.source_url,
-    cookTime: 30, // Default value since Forkify doesn't provide this
-    servings: 4, // Default value since Forkify doesn't provide this
-    ingredients: recipe.ingredients
-      ? recipe.ingredients.map((ing) => ({
-          quantity: ing.quantity || 0,
-          unit: ing.unit || "",
-          description: ing.description || "",
-        }))
-      : [],
-    instructions: recipe.cooking_instructions || [],
-    isBookmarked: false,
-  }));
-}
+};
 
 export async function getRecipeById(id) {
   if (!id) {

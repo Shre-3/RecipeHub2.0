@@ -22,6 +22,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -31,8 +33,7 @@ const Register = () => {
       await register(username, email, password);
       navigate("/recipes");
     } catch (err) {
-      console.error("Registration error:", err);
-      setError(err.message || "Registration failed. Please try again.");
+      setError(err.message || "Registration failed");
     }
   };
 

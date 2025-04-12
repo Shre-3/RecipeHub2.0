@@ -65,26 +65,21 @@ export function AIRecommendations({ onSelectRecipe }) {
     });
   };
 
-  const getRecommendations = async () => {
-    setLoading(true);
-    setError(null);
-
+  const fetchRecommendations = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_AUTH}/recommendations`,
-        preferences,
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_AI}/recommendations`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-
       setRecommendations(response.data);
     } catch (err) {
-      console.error("Error fetching recommendations:", err);
-      setError("Failed to load recommendations. Please try again.");
+      setError("Failed to fetch recommendations");
     } finally {
       setLoading(false);
     }
@@ -190,7 +185,7 @@ export function AIRecommendations({ onSelectRecipe }) {
         </div>
 
         <button
-          onClick={getRecommendations}
+          onClick={fetchRecommendations}
           className="w-full py-2 bg-[#1f5129] text-white rounded-md hover:bg-[#1f5129]/90 transition-colors"
         >
           Get Recommendations

@@ -22,39 +22,10 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      console.log("Starting login attempt...");
-      console.log("Form data:", { email, password });
-
-      if (!email || !password) {
-        setError("Email and password are required");
-        return;
-      }
-
       await login(email, password);
-      console.log("Login successful, navigating...");
       navigate("/recipes");
     } catch (err) {
-      console.error("Login error details:", {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-      });
-
-      if (err.message === "VITE_API_AUTH environment variable is not defined") {
-        setError("Server configuration error. Please try again later.");
-      } else if (err.response?.status === 404) {
-        setError(
-          "Cannot connect to authentication server. Please try again later."
-        );
-      } else if (err.response?.status === 401) {
-        setError("Invalid email or password");
-      } else {
-        setError(
-          err.response?.data?.message ||
-            err.message ||
-            "Login failed. Please try again."
-        );
-      }
+      setError(err.message || "Invalid credentials");
     }
   };
 

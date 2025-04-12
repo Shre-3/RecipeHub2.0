@@ -40,7 +40,6 @@ export function RecipeDetail({ recipe, loading, error }) {
 
         setIsBookmarked(response.data.isBookmarked);
       } catch (err) {
-        console.error("Failed to check bookmark status:", err);
         setIsBookmarked(false);
       }
     };

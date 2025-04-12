@@ -71,7 +71,6 @@ export function BookmarkedRecipes() {
   }, []);
 
   const handleSelectRecipe = (recipe) => {
-    console.log("Selected recipe:", recipe);
     setSelectedRecipe(recipe);
   };
 

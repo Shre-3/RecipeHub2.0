@@ -15,12 +15,12 @@ const Navbar = ({ onReset }) => {
     navigate("/recipes");
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
       logout();
-      navigate("/login", { replace: true });
+      navigate("/");
     } catch (error) {
-      console.error("Logout error:", error);
+      // Handle logout error silently
     }
   };
 
