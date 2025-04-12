@@ -1,7 +1,7 @@
 import React from "react";
 import { ExternalLink } from "lucide-react";
 
-const RecipeContent = ({ recipe, servings }) => {
+export function RecipeContent({ recipe, servings }) {
   return (
     <>
       {/* Ingredients Section */}
@@ -72,6 +72,4 @@ const RecipeContent = ({ recipe, servings }) => {
       )}
     </>
   );
-};
-
-export default RecipeContent;
+}
