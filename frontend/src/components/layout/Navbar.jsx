@@ -35,7 +35,7 @@ const Navbar = ({ onReset }) => {
             >
               <ChefHat className="h-8 w-8 text-[#1f5129]" />
               <span className="ml-2 text-xl font-bold text-[#1f5129]">
-                RecipeHub
+                Recipe Hub
               </span>
             </button>
           </div>

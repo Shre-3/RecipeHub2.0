@@ -17,26 +17,39 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_AUTH}/login`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setUser(res.data.user);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       return res.data;
-    } catch (error) {
-      throw error.response?.data?.message || "An error occurred";
+    } catch (err) {
+      // Only log non-sensitive error information
+      console.error("Login failed:", err.response?.status || "Unknown error");
+      throw err;
     }
   };
 
   const register = async (username, email, password) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        username,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_AUTH}/register`,
+        {
+          username,
+          email,
+          password,
+        }
+      );
       setUser(res.data.user);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));

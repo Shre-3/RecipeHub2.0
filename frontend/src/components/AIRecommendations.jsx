@@ -72,7 +72,7 @@ export function AIRecommendations({ onSelectRecipe }) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/ai/recommendations",
+        `${import.meta.env.VITE_API_AUTH}/recommendations`,
         preferences,
         {
           headers: {

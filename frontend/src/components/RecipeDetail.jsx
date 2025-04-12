@@ -33,7 +33,7 @@ export function RecipeDetail({ recipe, loading, error, isAIGenerated }) {
       const idToCheck = recipe._id || recipe.id;
 
       const response = await axios.get(
-        `http://localhost:5000/api/bookmarks/check/${idToCheck}`,
+        `${import.meta.env.VITE_API_BOOKMARKS}/check/${idToCheck}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -73,7 +73,7 @@ export function RecipeDetail({ recipe, loading, error, isAIGenerated }) {
         };
 
         const saveResponse = await axios.post(
-          "http://localhost:5000/api/recipes",
+          import.meta.env.VITE_API_RECIPES,
           recipeData,
           {
             headers: {
@@ -95,15 +95,17 @@ export function RecipeDetail({ recipe, loading, error, isAIGenerated }) {
       if (!isBookmarked) {
         // Add bookmark
         await axios.post(
-          "http://localhost:5000/api/bookmarks",
-          { recipeId: recipeIdToUse },
+          import.meta.env.VITE_API_BOOKMARKS,
+          { recipeId: savedRecipeId || recipeIdToUse },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setIsBookmarked(true);
       } else {
         // Remove bookmark
         await axios.delete(
-          `http://localhost:5000/api/bookmarks/${recipeIdToUse}`,
+          `${import.meta.env.VITE_API_BOOKMARKS}/${
+            savedRecipeId || recipeIdToUse
+          }`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

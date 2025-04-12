@@ -31,7 +31,7 @@ export function BookmarkedRecipes() {
   const fetchBookmarkedRecipes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/bookmarks", {
+      const response = await axios.get(import.meta.env.VITE_API_BOOKMARKS, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

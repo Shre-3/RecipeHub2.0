@@ -16,7 +16,7 @@ export function AIRecipeGenerator({ onRecipeGenerated, setLoading, setError }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/ai/generate-recipe",
+        `${import.meta.env.VITE_API_AI}/generate-recipe`,
         {
           ingredients: ingredients.split(",").map((i) => i.trim()),
         },

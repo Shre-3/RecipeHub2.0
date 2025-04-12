@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { SearchBar } from "./SearchBar";
 import { RecipeList } from "./RecipeList";
 import { RecipeDetail } from "./RecipeDetail";
 import { useRecipes } from "../hooks/useRecipes";
-import { ChefHat } from "lucide-react";
 
 const Home = () => {
+  const [hasSearched, setHasSearched] = useState(false);
   const {
     recipes,
     selectedRecipe,
@@ -18,11 +18,25 @@ const Home = () => {
     reset,
   } = useRecipes();
 
+  const handleSearch = async (query) => {
+    const trimmed = query.trim();
+    if (trimmed !== "") {
+      setHasSearched(true); // mark that search has happened
+      setCurrentPage(1);
+      await searchForRecipes(trimmed);
+    }
+  };
+
+  const handleReset = () => {
+    setHasSearched(false);
+    reset();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1f5129]/10 to-[#f0e4cc]/30 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
-          <SearchBar onSubmit={searchForRecipes} />
+          <SearchBar onSubmit={handleSearch} onReset={handleReset} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
@@ -35,6 +49,7 @@ const Home = () => {
               error={error}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              hasSearched={hasSearched}
             />
           </div>
 
