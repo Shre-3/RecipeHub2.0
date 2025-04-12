@@ -34,7 +34,6 @@ router.get("/", auth, async (req, res) => {
           `${process.env.RECIPE_API_URL}/${bookmark.recipeId}`
         );
         const recipe = response.data.data.recipe;
-        console.log("Forkify API recipe:", recipe);
         return {
           id: recipe.id,
           name: recipe.title,
@@ -86,12 +85,12 @@ router.get("/check/:recipeId", auth, async (req, res) => {
 // Add a bookmark
 router.post("/", auth, async (req, res) => {
   try {
-    const { recipeId } = req.body;
+    const { recipe } = req.body;
 
     // Check if already bookmarked
     const existingBookmark = await Bookmark.findOne({
       user: req.user.userId,
-      recipeId,
+      recipeId: recipe.id,
     });
 
     if (existingBookmark) {
@@ -100,7 +99,7 @@ router.post("/", auth, async (req, res) => {
 
     const bookmark = new Bookmark({
       user: req.user.userId,
-      recipeId,
+      recipeId: recipe.id,
     });
 
     await bookmark.save();
