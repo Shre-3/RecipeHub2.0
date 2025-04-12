@@ -15,7 +15,7 @@ export function BookmarkedRecipes() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const baseUrl = "http://localhost:5000";
+      const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
 
       const response = await axios({
         method: "get",

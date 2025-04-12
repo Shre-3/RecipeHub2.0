@@ -53,7 +53,7 @@ export function RecipeDetail({ recipe, loading, error }) {
     try {
       setIsBookmarkLoading(true);
       const token = localStorage.getItem("token");
-      const baseUrl = "http://localhost:5000";
+      const baseUrl = import.meta.env.VITE_API_URL.replace("/api", "");
 
       if (!isBookmarked) {
         const transformedRecipe = {
