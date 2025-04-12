@@ -5,7 +5,6 @@ import { RecipeDetail } from "./RecipeDetail";
 import { useRecipes } from "../hooks/useRecipes";
 
 const Home = () => {
-  const [hasSearched, setHasSearched] = useState(false);
   const {
     recipes,
     selectedRecipe,
@@ -21,14 +20,12 @@ const Home = () => {
   const handleSearch = async (query) => {
     const trimmed = query.trim();
     if (trimmed !== "") {
-      setHasSearched(true); // mark that search has happened
       setCurrentPage(1);
       await searchForRecipes(trimmed);
     }
   };
 
   const handleReset = () => {
-    setHasSearched(false);
     reset();
   };
 
@@ -49,7 +46,6 @@ const Home = () => {
               error={error}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
-              hasSearched={hasSearched}
             />
           </div>
 

@@ -1,14 +1,38 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function searchRecipes(query) {
+  console.log("Search URL:", `${BASE_URL}?search=${query}`);
+  console.log("BASE_URL:", BASE_URL);
+
   const response = await fetch(`${BASE_URL}?search=${query}`);
   if (!response.ok) throw new Error("Failed to fetch recipes");
   const data = await response.json();
 
+  console.log("API Response:", data);
+
   if (!data.data || !Array.isArray(data.data.recipes)) {
     throw new Error("Unexpected API response format");
   }
-  return data.data.recipes.map(mapApiRecipe);
+
+  // Transform the Forkify recipe format to our app's format
+  return data.data.recipes.map((recipe) => ({
+    id: recipe.id,
+    name: recipe.title,
+    description: recipe.title,
+    image: recipe.image_url,
+    sourceUrl: recipe.source_url,
+    cookTime: 30, // Default value since Forkify doesn't provide this
+    servings: 4, // Default value since Forkify doesn't provide this
+    ingredients: recipe.ingredients
+      ? recipe.ingredients.map((ing) => ({
+          quantity: ing.quantity || 0,
+          unit: ing.unit || "",
+          description: ing.description || "",
+        }))
+      : [],
+    instructions: recipe.cooking_instructions || [],
+    isBookmarked: false,
+  }));
 }
 
 export async function getRecipeById(id) {
@@ -24,6 +48,43 @@ export async function getRecipeById(id) {
     throw new Error("Recipe not found");
   }
   return mapApiRecipe(data.data.recipe);
+}
+
+export async function saveRecipe(recipe) {
+  const token = localStorage.getItem("token"); // or however you store the token
+
+  const transformedRecipe = {
+    title: recipe.name,
+    description: recipe.description,
+    ingredients: recipe.ingredients.map((ing) => ({
+      quantity: ing.quantity,
+      unit: ing.unit,
+      description: ing.description,
+    })),
+    instructions: recipe.instructions,
+    cooking_time: recipe.cookTime,
+    servings: recipe.servings,
+    image_url: recipe.image,
+    isAIGenerated: recipe.isAIGenerated,
+    source_url: recipe.sourceUrl,
+  };
+
+  const response = await fetch(`${BASE_URL}/api/recipes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(transformedRecipe),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to save recipe");
+  }
+
+  const data = await response.json();
+  return mapApiRecipe(data.recipe);
 }
 
 function mapApiRecipe(apiRecipe) {

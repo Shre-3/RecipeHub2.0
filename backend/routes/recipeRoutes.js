@@ -51,7 +51,44 @@ router.post("/", auth, async (req, res) => {
 
 // @route   GET api/recipes
 // @desc    Get all recipes
-router.get("/", recipeController.getAllRecipes);
+router.get("/", async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    const recipes = await Recipe.find(query)
+      .populate("creator", "username")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      data: {
+        recipes: recipes.map((recipe) => ({
+          id: recipe._id,
+          title: recipe.title,
+          publisher: recipe.creator?.username || "",
+          image_url: recipe.image_url,
+          cooking_time: recipe.cooking_time,
+          servings: recipe.servings,
+          ingredients: recipe.ingredients,
+          source_url: recipe.sourceUrl || "",
+          isAIGenerated: recipe.isAIGenerated || false,
+        })),
+      },
+    });
+  } catch (error) {
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // @route   GET api/recipes/user
 // @desc    Get user's recipes

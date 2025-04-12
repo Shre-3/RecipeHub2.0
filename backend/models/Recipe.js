@@ -14,44 +14,15 @@ const recipeSchema = new mongoose.Schema({
   },
   ingredients: [
     {
-      quantity: {
-        type: Number,
-        required: function () {
-          return this.isAIGenerated;
-        },
-      },
-      unit: {
-        type: String,
-        required: function () {
-          return this.isAIGenerated;
-        },
-      },
-      description: {
-        type: String,
-        required: true,
-      },
+      quantity: Number,
+      unit: String,
+      description: String,
     },
   ],
-  instructions: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
-  image_url: {
-    type: String,
-    required: function () {
-      return !this.isAIGenerated;
-    },
-  },
-  cooking_time: {
-    type: Number,
-    required: true,
-  },
-  servings: {
-    type: Number,
-    required: true,
-  },
+  instructions: [String],
+  image_url: String,
+  cooking_time: Number,
+  servings: Number,
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -65,12 +36,7 @@ const recipeSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  sourceUrl: {
-    type: String,
-    required: function () {
-      return !this.isAIGenerated;
-    },
-  },
+  sourceUrl: String,
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);

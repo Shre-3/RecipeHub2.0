@@ -31,9 +31,7 @@ export function AIRecipeGenerator({ onRecipeGenerated, setLoading, setError }) {
       const recipeWithDefaults = {
         ...response.data,
         id: Date.now().toString(),
-        image:
-          "https://source.unsplash.com/featured/?food," +
-          response.data.name.replace(/\s+/g, "-"),
+        isAIGenerated: true,
       };
 
       onRecipeGenerated(recipeWithDefaults);
