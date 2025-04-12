@@ -41,6 +41,20 @@ mongoose
     process.exit(1);
   });
 
+// Root route
+app.get("/", (req, res) => {
+  res.json({
+    message: "Welcome to RecipeHub API",
+    endpoints: {
+      test: "/api/test",
+      auth: "/api/auth",
+      recipes: "/api/recipes",
+      bookmarks: "/api/bookmarks",
+      ai: "/api/ai",
+    },
+  });
+});
+
 // Test route to verify server is running
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working!" });

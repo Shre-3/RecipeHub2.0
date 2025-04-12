@@ -17,8 +17,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      // Debug logs
+      console.log("All env variables:", {
+        VITE_API_URL: import.meta.env.VITE_API_URL,
+        VITE_API_AUTH: import.meta.env.VITE_API_AUTH,
+        VITE_API_BOOKMARKS: import.meta.env.VITE_API_BOOKMARKS,
+        VITE_API_AI: import.meta.env.VITE_API_AI,
+        VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
+      });
+
+      if (!import.meta.env.VITE_API_AUTH) {
+        throw new Error("VITE_API_AUTH environment variable is not defined");
+      }
+
+      const loginUrl = `${import.meta.env.VITE_API_AUTH}/login`;
+      console.log("Attempting login at:", loginUrl);
+      console.log("With payload:", { email, password });
+
       const res = await axios.post(
-        `${import.meta.env.VITE_API_AUTH}/login`,
+        loginUrl,
         {
           email,
           password,
@@ -29,13 +46,25 @@ export const AuthProvider = ({ children }) => {
           },
         }
       );
+
+      // Debug response
+      console.log("Login response:", res.data);
+
+      if (!res.data || !res.data.user) {
+        throw new Error("Invalid response format from server");
+      }
+
       setUser(res.data.user);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       return res.data;
     } catch (err) {
-      // Only log non-sensitive error information
-      console.error("Login failed:", err.response?.status || "Unknown error");
+      console.error("Login error details:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        url: err.config?.url,
+      });
       throw err;
     }
   };
