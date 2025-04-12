@@ -29,4 +29,18 @@ yarn-error.log*
 
 # OS specific
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# MongoDB
+backend/data/
+backend/data/mongodb/
+*.wt
+*.lock
+mongod.lock
+storage.bson
+WiredTiger*
+*.bson
+
+# Sensitive info
+**/config/keys.js
+**/config/secrets.js 
