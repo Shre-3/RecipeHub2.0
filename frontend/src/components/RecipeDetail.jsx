@@ -128,12 +128,7 @@ export function RecipeDetail({ recipe, loading, error }) {
 
       window.dispatchEvent(new CustomEvent("bookmarkUpdated"));
     } catch (err) {
-      console.error("Failed to toggle bookmark:", err);
-      alert(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to update bookmark"
-      );
+      alert("Unable to update bookmark. Please try again.");
     } finally {
       setIsBookmarkLoading(false);
     }

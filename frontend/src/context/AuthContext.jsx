@@ -28,29 +28,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // Debug logs
-      console.log("All env variables:", {
-        VITE_API_URL: import.meta.env.VITE_API_URL,
-        VITE_API_AUTH: import.meta.env.VITE_API_AUTH,
-        VITE_API_BOOKMARKS: import.meta.env.VITE_API_BOOKMARKS,
-        VITE_API_AI: import.meta.env.VITE_API_AI,
-        VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
-      });
-
       if (!import.meta.env.VITE_API_AUTH) {
-        throw new Error("VITE_API_AUTH environment variable is not defined");
+        throw new Error("Authentication service unavailable");
       }
 
       const loginUrl = `${import.meta.env.VITE_API_AUTH}/login`;
-      console.log("Attempting login at:", loginUrl);
-      console.log("With payload:", { email, password });
-
       const res = await axios.post(
         loginUrl,
-        {
-          email,
-          password,
-        },
+        { email, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -58,11 +43,8 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
-      // Debug response
-      console.log("Login response:", res.data);
-
       if (!res.data || !res.data.user) {
-        throw new Error("Invalid response format from server");
+        throw new Error("Invalid response from server");
       }
 
       setUser(res.data.user);
@@ -70,19 +52,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(res.data.user));
       return res.data;
     } catch (err) {
-      console.error("Login error details:", {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        url: err.config?.url,
-      });
-
-      // Clean up any invalid data
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      setUser(null);
-
-      throw err;
+      // Clean error handling without exposing details
+      if (err.response?.status === 401) {
+        throw new Error("Invalid credentials");
+      } else {
+        throw new Error("Login failed. Please try again later.");
+      }
     }
   };
 

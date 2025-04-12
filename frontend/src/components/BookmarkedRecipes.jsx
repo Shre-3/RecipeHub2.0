@@ -26,8 +26,6 @@ export function BookmarkedRecipes() {
         },
       });
 
-      console.log("Raw bookmarks response:", response.data);
-
       // Transform the bookmarked recipes to match our app's format
       const formattedRecipes = response.data.map((recipe) => ({
         id: recipe.id,
@@ -46,12 +44,10 @@ export function BookmarkedRecipes() {
         isAIGenerated: recipe.isAIGenerated === true,
       }));
 
-      console.log("Formatted bookmarked recipes:", formattedRecipes);
       setBookmarkedRecipes(formattedRecipes);
       setError(null);
     } catch (err) {
-      console.error("Error fetching bookmarks:", err);
-      setError("Failed to load bookmarked recipes");
+      setError("Unable to load bookmarked recipes");
       setBookmarkedRecipes([]);
     } finally {
       setLoading(false);
@@ -66,7 +62,6 @@ export function BookmarkedRecipes() {
   // Listen for bookmark updates
   useEffect(() => {
     const handleBookmarkUpdate = () => {
-      console.log("Bookmark update event received");
       fetchBookmarkedRecipes();
     };
 
